@@ -1,0 +1,1 @@
+{"name":"licensebox","description":"Linux native Licensebox application SDK","authors":["Licensebox"],"license":"MIT","targetType":"library","sourcePaths":["src"],"importPaths":["src"],"libs":["licensebox"]}
