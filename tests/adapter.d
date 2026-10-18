@@ -24,6 +24,12 @@ JSONValue run(JSONValue r){
     if("binding" in r.object)cb.machineBinding=&bindingCb;
     auto client=new Client(options,cb);scope(exit)client.close();
     if(op=="require")return client.requireModule("module" in r.object ? r["module"].str : "core");
+    if(op=="heartbeat" || op=="heartbeat-repeat" || op=="heartbeat-after-require"){
+        auto name="module" in r.object ? r["module"].str : "core";
+        if(op=="heartbeat-after-require")client.requireModule("core");
+        if(op=="heartbeat-repeat")client.heartbeat(name);
+        return client.heartbeat(name);
+    }
     if(op=="repeat"){client.requireModule("core");return client.requireModule("core");}
     if(op=="sign_in")return client.signIn(3);
     if(op=="request")return client.requestAccess(["export"],"café – test");

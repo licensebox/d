@@ -77,6 +77,7 @@ class Client {
     }}
     JSONValue lease(){return call("lease");}
     JSONValue requireModule(string name){return call("require",JSONValue(["module":JSONValue(valid(name))]));}
+    JSONValue heartbeat(string name){return call("heartbeat",JSONValue(["module":JSONValue(valid(name))]));}
     JSONValue status(){return call("status");}
     JSONValue signIn(double timeout=0){return call("sign_in",JSONValue(["timeout":JSONValue(timeout)]));}
     void logout(){call("logout");}
