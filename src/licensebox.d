@@ -1,4 +1,5 @@
 module licensebox;
+enum sdkVersion = "0.2.0";
 import std.json;
 import std.string : toStringz, fromStringz, indexOf, stripRight;
 import core.stdc.stdlib : free;
