@@ -1,5 +1,5 @@
 module licensebox;
-enum sdkVersion = "0.3.0";
+enum sdkVersion = "0.4.0";
 import std.json;
 import std.string : toStringz, fromStringz, indexOf, stripRight;
 import core.stdc.stdlib : free;
@@ -89,6 +89,14 @@ class Client {
         return call("request",JSONValue(["modules":JSONValue(values),"note":JSONValue(valid(note))]));
     }
     string accessLink(){return call("access-link").str;}
+    /// Service accounts and floating copies: requireModule checks a floating
+    /// module out by itself; options may carry enrol_token (else LICENSEBOX_ENROL_TOKEN).
+    JSONValue enrol(string token){return call("enrol",JSONValue(["token":JSONValue(valid(token))]));}
+    JSONValue checkout(string name){return call("checkout",JSONValue(["module":JSONValue(valid(name))]));}
+    void checkin(string[] names...){
+        JSONValue[] values;foreach(name;names)values~=JSONValue(valid(name));
+        call("checkin",JSONValue(["modules":JSONValue(values)]));
+    }
     void recordUsage(string command,bool success,double elapsed){
         call("record",JSONValue(["command":JSONValue(valid(command)),"success":JSONValue(success),"elapsed":JSONValue(elapsed)]));
     }

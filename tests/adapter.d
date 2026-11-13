@@ -20,6 +20,7 @@ JSONValue run(JSONValue r){
     if(op=="verify")return verifyLease(r["token"].str,product,r["keys"],number(r["now"]));
     auto options=JSONValue(["product":r["product"],"keys":r["keys"],"server":r["server"],"directory":r["directory"],"version":JSONValue("conformance")]);
     if("ca_bundle" in r.object)options["ca_bundle"]=r["ca_bundle"];
+    if("enrol_token" in r.object)options["enrol_token"]=r["enrol_token"];
     Callbacks cb;cb.clock=&clockCb;cb.onSignIn=&signinCb;
     if("binding" in r.object)cb.machineBinding=&bindingCb;
     auto client=new Client(options,cb);scope(exit)client.close();
@@ -32,6 +33,9 @@ JSONValue run(JSONValue r){
     }
     if(op=="repeat"){client.requireModule("core");return client.requireModule("core");}
     if(op=="sign_in")return client.signIn(3);
+    if(op=="enrol")return client.enrol(r["token"].str);
+    if(op=="checkout")return client.checkout(r["module"].str);
+    if(op=="checkin"){client.checkin(r["module"].str);return JSONValue(null);}
     if(op=="request")return client.requestAccess(["export"],"café – test");
     if(op=="record"){client.recordUsage("export",true,0.125);client.recordUsage("export",false,0.025);return JSONValue(null);}
     return client.call(op);
